@@ -4,18 +4,18 @@ import "./Featured.css";
 
 const Featured = () => {
   return (
-    <div className="bg-[url('/Assets/featured.jpg')] bg-black bg-opacity-60 text-white bg-fixed py-2 my-16 relative">
-      <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+    <div className="bg-[url('/Assets/featured.jpg')] bg-black bg-opacity-60 text-white bg-no-repeat bg-center bg-cover bg-fixed py-2 my-16 relative">
+     
       <SectionTitle
         subheading={"Check It Out"}
         heading={"From Our Menu"}
       ></SectionTitle>
       <div className="flex items-center  justify-center gap-10 py-10 px-36">
         <div>
-          <img src={featured} alt="" />
+          <img className="rounded-lg" src={featured} alt="" />
         </div>
         <div className="space-y-5">
-          <p className="text-gray-400">Dec 30,2024</p>
+          <p className="">Dec 30,2024</p>
           <h2 className="uppercase">Where Can I Get some?</h2>
           <p>
             Discover the heart of our restaurant with our featured dishes,
