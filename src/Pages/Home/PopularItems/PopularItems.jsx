@@ -4,7 +4,8 @@ import MenuItems from "../../Shared/Menu Items/MenuItems";
 
 const PopularItems = () => {
   const [menu] = useMenu();
-  const popularItems = menu.filter((items) => items?.category === "popular");
+  const popularItems = menu.filter((items) => items.category === "popular");
+
   return (
     <div>
       <SectionTitle
@@ -13,8 +14,8 @@ const PopularItems = () => {
       ></SectionTitle>
 
       <div className="grid md:grid-cols-2 gap-8 mb-12">
-        {popularItems.map((items) => (
-          <MenuItems key={items._id} items={items}></MenuItems>
+        {popularItems.map((item) => (
+          <MenuItems key={item._id} item={item}></MenuItems>
         ))}
       </div>
       <div className="flex justify-center items-center">
