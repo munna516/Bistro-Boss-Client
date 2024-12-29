@@ -19,8 +19,8 @@ const Category = () => {
         heading={"Order online"}
       ></SectionTitle>
       <Swiper
-        slidesPerView={3}
-        spaceBetween={30}
+        slidesPerView={4}
+        spaceBetween={0}
         pagination={{
           clickable: true,
         }}
@@ -40,12 +40,16 @@ const Category = () => {
           <h2 className="text-3xl text-center -mt-16 text-white">Soup</h2>
         </SwiperSlide>
         <SwiperSlide>
+          <img src={slide1} alt="" />
+          <h2 className="text-3xl text-center -mt-16 text-white">Salad</h2>
+        </SwiperSlide>
+        <SwiperSlide>
           <img src={slide4} alt="" />
           <h2 className="text-3xl text-center -mt-16 text-white">Deserts</h2>
         </SwiperSlide>
 
         <SwiperSlide>
-          <img src={slide1} alt="" />
+          <img src={slide5} alt="" />
           <h2 className="text-3xl text-center -mt-16 text-white">Pizza</h2>
         </SwiperSlide>
       </Swiper>
