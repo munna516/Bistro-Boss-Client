@@ -2,9 +2,12 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../../Provider/AuthProvider";
 import Swal from "sweetalert2";
+import { FaShoppingCart } from "react-icons/fa";
+import useCart from "../../../Hooks/useCart";
 
 const Navbar = () => {
   const { user, userLogOut } = useContext(AuthContext);
+  const [cart] = useCart();
   const handleLogOut = () => {
     userLogOut()
       .then((result) => {
@@ -33,6 +36,15 @@ const Navbar = () => {
       </li>
       <li>
         <Link to="/secret">Secret</Link>
+      </li>
+      <li>
+        <Link to="/dashboard/cart">
+          <button className="btn">
+            <FaShoppingCart className="text-xl"></FaShoppingCart>
+
+            <div className="badge badge-secondary">+{cart.length}</div>
+          </button>
+        </Link>
       </li>
 
       {user && user?.email ? (
@@ -77,7 +89,7 @@ const Navbar = () => {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+              className="menu menu-sm dropdown-content bg-base-100 items-center rounded-box z-[1] mt-3 w-52 p-2 shadow"
             >
               {navOptions}
             </ul>
@@ -87,7 +99,9 @@ const Navbar = () => {
           </Link>
         </div>
         <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1">{navOptions}</ul>
+          <ul className="menu menu-horizontal px-1 items-center">
+            {navOptions}
+          </ul>
         </div>
         <div className="navbar-end">
           <a className="btn">Button</a>
