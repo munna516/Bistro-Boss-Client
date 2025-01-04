@@ -5,8 +5,11 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Provider/AuthProvider";
 import Swal from "sweetalert2";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
+import SocialLogin from "../../Components/SocialLogin/SocialLogin";
 
 const SignUp = () => {
+  const axiosPublic = useAxiosPublic();
   const { createUser, updateUserProfile } = useContext(AuthContext);
   const navigate = useNavigate();
   const {
@@ -21,14 +24,23 @@ const SignUp = () => {
       .then((result) => {
         updateUserProfile({ displayName: data.name, photoURL: data.photo })
           .then(() => {
-            Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "Sign Up Successful",
-              showConfirmButton: false,
-              timer: 1500,
+            const userInfo = {
+              name: data.name,
+              email: data.email,
+            };
+            axiosPublic.post("/users", userInfo).then((res) => {
+              if (res.data.insertedId) {
+                console.log("user inserted to database");
+                Swal.fire({
+                  position: "center",
+                  icon: "success",
+                  title: "Sign Up Successful",
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
+                navigate("/");
+              }
             });
-            navigate("/");
           })
           .catch((error) => console.log(error.code));
       })
@@ -163,6 +175,7 @@ const SignUp = () => {
                 Login
               </Link>
             </p>
+            <SocialLogin></SocialLogin>
           </div>
         </div>
       </div>
