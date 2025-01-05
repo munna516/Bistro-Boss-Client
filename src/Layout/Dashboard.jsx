@@ -10,9 +10,10 @@ import {
   FaUser,
 } from "react-icons/fa";
 import { NavLink, Outlet } from "react-router-dom";
+import useAdmin from "../Hooks/useAdmin";
 
 const Dashboard = () => {
-  const admin = true;
+  const [admin] = useAdmin()
   return (
     <div className="flex">
       <div className="w-64 bg-orange-400 min-h-screen text-white">
