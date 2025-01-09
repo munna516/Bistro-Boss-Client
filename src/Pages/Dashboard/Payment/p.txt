@@ -1,0 +1,8 @@
+// Client side
+* React Stripe and stripe install
+* card element create
+* create stripe account and get publishable ke
+* Use publishable key and use stripe to get card information and error
+
+
+? stripe card information need for payment intien

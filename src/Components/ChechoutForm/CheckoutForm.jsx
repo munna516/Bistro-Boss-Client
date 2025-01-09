@@ -12,15 +12,17 @@ const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
   const axiosSecure = useAxiosSecure();
-  const [cart] = useCart();
+  const [cart, refetch] = useCart();
   const totalPrice = cart.reduce((total, item) => total + item.price, 0);
   useEffect(() => {
-    axiosSecure
-      .post("/create-payment-intent", { price: totalPrice })
-      .then((res) => {
-        console.log(res.data.clientSecret);
-        setClientSecret(res.data.clientSecret);
-      });
+    if (totalPrice > 0) {
+      axiosSecure
+        .post("/create-payment-intent", { price: totalPrice })
+        .then((res) => {
+          console.log(res.data.clientSecret);
+          setClientSecret(res.data.clientSecret);
+        });
+    }
   }, [axiosSecure, totalPrice]);
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,9 +47,8 @@ const CheckoutForm = () => {
     }
 
     // Confirm payment
-    const { paymentIntent, confirmError } = await stripe.confirmCardPayment(
-      clientSecret,
-      {
+    const { paymentIntent, error: confirmError } =
+      await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: card,
           billing_details: {
@@ -55,14 +56,25 @@ const CheckoutForm = () => {
             name: user?.displayName || "annonymous",
           },
         },
-      }
-    );
+      });
     if (confirmError) {
       console.log("confirm erro", confirmError);
     } else {
       console.log("Payment intent", paymentIntent);
       if (paymentIntent.status === "succeeded") {
         setTransactionId(paymentIntent.id);
+        const payment = {
+          email: user.email,
+          price: totalPrice,
+          transactionId: paymentIntent.id,
+          data: new Date(),
+          cartIds: cart.map((item) => item._id),
+          menuItemId: cart.map((item) => item.menuId),
+          status: "Pending",
+        };
+        const res = await axiosSecure.post("/payments", payment);
+        console.log(res);
+        refetch();
       }
     }
   };
@@ -94,7 +106,11 @@ const CheckoutForm = () => {
       <div>
         <p className="text-red-500">{error}</p>
       </div>
-      <p>{transactionId && <p className="text-green-600">Your transactionId : {transactionId}</p>}</p>
+      <p>
+        {transactionId && (
+          <p className="text-green-600">Your transactionId : {transactionId}</p>
+        )}
+      </p>
     </form>
   );
 };
